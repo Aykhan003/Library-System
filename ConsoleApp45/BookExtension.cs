@@ -15,4 +15,5 @@ internal static class BookExtension
         decimal discountAmount = book.Price * (discountPercentage / 100);
         book.Price -= discountAmount;
     }
+
 }

@@ -14,73 +14,53 @@ internal class BookService : IBookService
         }
         _books.Add(book);
     }
-
-    public void CountByGenre(Genre genre)
-    {
-        var count = _books.Count(b => b.Genre == genre);
-        Console.WriteLine($"Number of books in {genre}: {count}");
-    }
-
-    public void GetAveragePrice()
-    {
-        var average = _books.Average(b => b.Price);
-        Console.WriteLine($"Average price of all books: {average}");
-    }
-
-    public void GetByGenre(Genre genre)
-    {
-        var books = _books.Where(b => b.Genre == genre);
-        foreach (var book in books)
-        {
-            Console.WriteLine($"Title: {book.Title}, Author: {book.Author}, Price: {book.Price}");
-        }
-    }
-
-    public void GetById(int id)
+    public Book GetById(int id)
     {
         var book = _books.Find(b => b.Id == id);
-        if (book != null)
+        if (book == null)
         {
-            Console.WriteLine($"Title: {book.Title}, Author: {book.Author}, Price: {book.Price}");
+            throw new FileNotFoundException("Book not found");
         }
-        else
-        {
-            Console.WriteLine("Book not found");
-        }
+        return book;
+    }
+    public int CountByGenre(Genre genre)
+    {
+        var count = _books.Count(b => b.Genre == genre);
+        return count;
     }
 
-    public void GetByPriceRange(decimal minPrice, decimal maxPrice)
+    public decimal GetAveragePrice()
+    {
+        var average = _books.Average(b => b.Price);
+        return average;
+    }
+
+    public List<Book> GetByGenre(Genre genre)
+    {
+        return _books.Where(b => b.Genre == genre).ToList();
+    }
+    public List<Book> GetByPriceRange(decimal minPrice, decimal maxPrice)
     {
         var books = _books.Where(b => b.Price >= minPrice && b.Price <= maxPrice);
-        foreach (var book in books)
-        {
-            Console.WriteLine($"Title: {book.Title}, Author: {book.Author}, Price: {book.Price}");
-        }
+        return books.ToList();
     }
-
-    public void GetCheapestBook()
+    public Book GetCheapestBook()
     {
         var book = _books.OrderBy(b => b.Price).FirstOrDefault();
-        if (book != null)
+        if (book == null)
         {
-            Console.WriteLine($"Title: {book.Title}, Author: {book.Author}, Price: {book.Price}");
+            throw new FileNotFoundException("Book not found");
         }
-        else
-        {
-            Console.WriteLine("No books available");
-        }
+        return book;
     }
 
-    public void GetMostExpensiveBook()
+    public Book GetMostExpensiveBook()
     {
         var book = _books.OrderByDescending(b => b.Price).FirstOrDefault();
-        if (book != null)
+        if (book == null)
         {
-            Console.WriteLine($"Title: {book.Title}, Author: {book.Author}, Price: {book.Price}");
+            throw new FileNotFoundException("Book not found");
         }
-        else
-        {
-            Console.WriteLine("No books available");
-        }
+        return book;
     }
 }

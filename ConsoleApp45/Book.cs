@@ -2,12 +2,8 @@
 
 internal class Book
 {
-    private int _id;
-    public int Id
-    {
-        get { return _id; }
-        set { _id = value; }
-    }
+    private static int _id;
+    public int Id { get; set; }
     public string Author { get; set; } = null!;
     public string Title { get; set; } = null!;
     public int PageCount { get; set; }
@@ -19,12 +15,20 @@ internal class Book
     {
          _id++;
         Id = _id;
-
         Title = title;
         Author = author;
         PageCount = pageCount;
         Price = price;
         StockCount = stockCount;
         Genre = genre;
+    }
+    public Book()
+    {
+        _id++;
+        Id = _id;
+    }
+    public Book ShallowCopy()
+    {
+        return (Book)this.MemberwiseClone();
     }
 }
